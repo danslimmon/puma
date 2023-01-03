@@ -121,7 +121,10 @@ module Puma
               @waiting -= 1
             end
 
-            work = todo.shift if continue
+            if continue
+              work = todo.shift
+              log "work = todo.shift"
+            end
           end
 
           break unless continue
