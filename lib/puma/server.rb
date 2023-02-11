@@ -306,6 +306,7 @@ module Puma
             process_now = client.eagerly_finish
           else
             client.finish
+            log "client.finish"
             process_now = true
           end
         rescue MiniSSL::SSLError => e
@@ -724,8 +725,10 @@ module Puma
 
       begin
         begin
+          log "calling app"
           status, headers, res_body = @app.call(env)
 
+          log "called app; status = #{status}; hijacked = #{req.hijacked}"
           return :async if req.hijacked
 
           status = status.to_i
